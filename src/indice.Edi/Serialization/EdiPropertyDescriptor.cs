@@ -96,7 +96,15 @@ internal class EdiPropertyDescriptor
         var pathInfo = Attributes.OfType<EdiPathAttribute>().FirstOrDefault();
         var conditions = Attributes.OfType<EdiConditionAttribute>().ToArray();
         _Conditions = conditions.Length > 0 ? conditions : null;
-        _ValueInfo = Attributes.OfType<EdiValueAttribute>().FirstOrDefault();
+
+        List<EdiValueAttribute> valueAttributes = new();
+        foreach (var attr in Attributes) {
+            if (typeof(EdiValueAttribute).IsAssignableFrom(attr.GetType())) {
+                valueAttributes.Add((EdiValueAttribute)attr);
+            }
+        }
+        _ValueInfo = valueAttributes.FirstOrDefault();
+
         _SegmentGroupInfo = Attributes.OfType<EdiSegmentGroupAttribute>().FirstOrDefault();
         _CountInfo = Attributes.OfType<EdiCountAttribute>().FirstOrDefault();
         if (_ValueInfo != null && _ValueInfo.Path != null && pathInfo == null) {

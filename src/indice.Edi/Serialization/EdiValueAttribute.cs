@@ -4,14 +4,16 @@
 /// Use <see cref="EdiValueAttribute"/> for any value inside a segment. 
 /// </summary>
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field, Inherited = false, AllowMultiple = true)]
-public sealed class EdiValueAttribute : EdiAttribute
+public class EdiValueAttribute : EdiAttribute
 {
-    private Picture _picture;
+    protected Picture picture;
     private bool _Mandatory;
     private string _Description;
     private string _Format;
     private string _Path;
-    
+
+    public static Type[]? AttributeSubClasses { get; set; } 
+
     /// <summary>
     /// Indicates that the current structure (Segment or Element) is mandatory or optional. By default this is false.
     /// </summary>
@@ -48,7 +50,7 @@ public sealed class EdiValueAttribute : EdiAttribute
     /// The value spec regarding value size and format.
     /// </summary>
     public Picture Picture {
-        get { return _picture; }
+        get { return picture; }
     }
 
     /// <summary>
@@ -70,7 +72,7 @@ public sealed class EdiValueAttribute : EdiAttribute
     /// </summary>
     /// <param name="picture"></param>
     public EdiValueAttribute(Picture picture) {
-        _picture = picture;
+        this.picture = picture;
     }
     
 }

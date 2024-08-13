@@ -49,8 +49,13 @@ class EdiTypeDescriptor
         var props = clrProps.Select(pi => new EdiPropertyDescriptor(pi)).Where(pi => pi.Attributes.Any());
         // support for multiple value attributes on the same property. Bit hacky.
         foreach (var p in props) {
-            var valueAttributes = p.Attributes.OfType<EdiValueAttribute>().ToArray();
-            if (valueAttributes.Length > 1) {
+            List<EdiAttribute> valueAttributes = new();
+            foreach (var attr in p.Attributes) {
+                if(typeof(EdiValueAttribute).IsAssignableFrom(attr.GetType())) {
+                    valueAttributes.Add(attr);
+                }
+            }
+            if (valueAttributes.Count() > 1) {
                 foreach (var vAttr in valueAttributes) {
                     _Properties.Add(new EdiPropertyDescriptor(p.Info, p.Attributes.Except([vAttr])));
                 }

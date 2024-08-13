@@ -192,6 +192,7 @@ public class EdiSerializer
 
             for (var i = 0; i < valueProps.Length; i++) {
                 var descriptor = valueProps[i];
+
                 // should I use the text reader? 
                 // Values must be read only once on first pass! 
                 // Otherwise the reader position moves forward 
@@ -750,6 +751,10 @@ public class EdiSerializer
         foreach (var property in properies) {
             var value = property.Info.GetValue(structure.Instance);
             if (property.ValueInfo != null) {
+
+                if (property.ValueInfo?.GetType().Name == "EdiDecimalValueAttribute") {
+
+                }
                 var path = (EdiPath)writer.Path;
                 var propertyPath = property.PathInfo.PathInternal;
                 var container = stack.Skip(1).FirstOrDefault();
