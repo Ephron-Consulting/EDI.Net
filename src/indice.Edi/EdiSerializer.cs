@@ -2,6 +2,7 @@
 using System.Globalization;
 using indice.Edi.Utilities;
 using indice.Edi.Serialization;
+using indice.Edi.Extensions;
 
 namespace indice.Edi;
 
@@ -752,9 +753,26 @@ public class EdiSerializer
             var value = property.Info.GetValue(structure.Instance);
             if (property.ValueInfo != null) {
 
-                if (property.ValueInfo?.GetType().Name == "EdiDecimalValueAttribute") {
-
+                switch (property.ValueInfo) 
+                {
+                    case EdiRealValueAttribute realAtteibute:
+                        // Value may be of a non-decimal type.  Even int cannot implicitly cast to decimal).
+                        if(value != null) {
+                            value = realAtteibute.ToX12(decimal.Parse(value.ToString()));
+                        }
+                        break;
+                    case EdiDecimalValueAttribute decimalAttribute:
+                        // Value may be of a non-decimal type.  Even int cannot implicitly cast to decimal).
+                        if (value != null) {
+                            value = decimalAttribute.ToX12(decimal.Parse(value.ToString()));
+                        }
+                        break;
+                    //case EdiDateValueAttribute dateAttribute:
+                    //    break;
+                    //case EdiAlphaNumericValueAttribute alphaNumericAttribute:
+                    //    break;
                 }
+                
                 var path = (EdiPath)writer.Path;
                 var propertyPath = property.PathInfo.PathInternal;
                 var container = stack.Skip(1).FirstOrDefault();
