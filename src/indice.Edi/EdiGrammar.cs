@@ -39,6 +39,7 @@ public class EdiGrammar : IEdiGrammar
         ReleaseCharacter = grammar.ReleaseCharacter;
         Reserved = grammar.Reserved.Clone() as char[];
         SegmentTerminator = grammar.SegmentTerminator;
+        NoSegmentTerminator = grammar.NoSegmentTerminator;
 
         ServiceStringAdviceTag = grammar.ServiceStringAdviceTag;
         InterchangeHeaderTag = grammar.InterchangeHeaderTag;
@@ -106,6 +107,8 @@ public class EdiGrammar : IEdiGrammar
     /// Segment terminator indicates the end of a message segment.
     /// </summary>
     public char SegmentTerminator { get; protected set; }
+
+    public bool NoSegmentTerminator { get; protected set; }
 
     /// <summary>
     /// Only available in EDI Fact. Otherwize null

@@ -104,7 +104,9 @@ public class EdiTextWriter : EdiWriter
     /// Writes the end of a Edi <see cref="EdiContainerType.Segment"/>.
     /// </summary>
     public override void WriteSegmentTerminator() {
-         _writer.Write(Grammar.SegmentTerminator); 
+        if(!Grammar.NoSegmentTerminator) {
+            _writer.Write(Grammar.SegmentTerminator);
+        }
         if (Formatting == Formatting.LinePerSegment) {
             WriteNewLine();
         }

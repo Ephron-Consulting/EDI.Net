@@ -49,6 +49,8 @@ public interface IEdiGrammar
     /// </summary>
     char SegmentTerminator { get; }
 
+    bool NoSegmentTerminator { get; }
+
     /// <summary>
     /// Only available in EDI Fact. Otherwize null
     /// </summary>
